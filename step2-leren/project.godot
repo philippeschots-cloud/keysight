@@ -1,0 +1,29 @@
+; Engine configuration file.
+; KeySight - piano leren op de Steam Frame (standalone, Linux ARM64)
+
+config_version=5
+
+[application]
+
+config/name="KeySight"
+config/description="KeySight: vallende noten op de echte piano, wachtmodus, MIDI-bestanden, feedback en automatische kalibratie."
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.6", "Mobile")
+config/use_custom_user_dir=true
+config/custom_user_dir_name="KeySight"
+
+[display]
+
+window/vsync/vsync_mode=0
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
+
+[xr]
+
+openxr/enabled=true
+openxr/startup_alert=false
+openxr/environment_blend_mode=0
+shaders/enabled=true

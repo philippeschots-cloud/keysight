@@ -1,0 +1,22 @@
+# Godot
+.godot/
+build/
+*.arm64
+*.x86_64
+*.translation
+# Logs en diagnose
+*.log
+*diagnose*.txt
+rapporten/
+# Eigen liedjes van de gebruiker (niet meeleveren)
+step2-leren/eigen-liedjes/
+songs-eigen/
+# Archief van de bron
+*.zip
+
+
+# Ruwe headset-screenshots: pas publiceren na keuze door de gebruiker
+docs/headset-raw/
+
+# Concepten
+reddit-post.md
