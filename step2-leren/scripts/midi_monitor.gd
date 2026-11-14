@@ -66,34 +66,11 @@ func rescan() -> void:
 	raw_event.emit("[scan] %d MIDI-ingang(en): %s" % [devices.size(), ", ".join(devices)])
 
 
-## Godot blijft een losgekoppeld ALSA-apparaat uitlezen en spamt dan
-## "snd_rawmidi_read error". Daarom elke paar seconden kijken of er nog een
-## USB-geluidskaart is; zo niet, de ingangen sluiten en opnieuw gaan zoeken.
-var _gone_timer := 0.0
-
-
-func _usb_midi_present() -> bool:
-	if OS.get_name() != "Linux":
-		return true
-	var f := FileAccess.open("/proc/asound/cards", FileAccess.READ)
-	if f == null:
-		return true
-	var txt := f.get_as_text()
-	return txt.contains("USB")
-
-
 func _process(delta: float) -> void:
-	if not devices.is_empty():
-		_gone_timer += delta
-		if _gone_timer >= RESCAN_INTERVAL:
-			_gone_timer = 0.0
-			if not _usb_midi_present():
-				OS.close_midi_inputs()
-				_opened = false
-				devices = PackedStringArray()
-				devices_changed.emit(devices)
-				raw_event.emit("[scan] MIDI-apparaat losgekoppeld; zoekt opnieuw")
-		return
+	# Let op: niet automatisch sluiten als het apparaat "weg lijkt". Godot leest
+	# /proc/asound/cards als leeg bestand, waardoor dat elke 3 s MIDI afsloot
+	# (noten en loslaten gingen verloren). De log-spam na loskoppelen filtert
+	# het startscript weg.
 	if devices.is_empty():
 		_rescan_timer += delta
 		if _rescan_timer >= RESCAN_INTERVAL:
